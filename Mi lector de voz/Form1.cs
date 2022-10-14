@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO; //agregar libreria
-using System.Speech;//agregar referencia //habla de computadora
+using System.IO; //agregar libreria //y sirve para abrir el OpenFileDialog
+using System.Speech; //agregar referencia //habla de computadora
 using System.Speech.Synthesis;
 
 namespace Mi_lector_de_voz
@@ -24,6 +24,58 @@ namespace Mi_lector_de_voz
         private void Form1_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e) //boton con forma de impresora.
+        {
+            Stream str;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            {
+                if(openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if ((str = openFileDialog.OpenFile()) != null) ;
+                    {
+                        string fname = openFileDialog.FileName;
+                        string filetxt=File.ReadAllText(fname);
+                        label1.Text = filetxt;
+                    }
+                }
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            reader.SpeakAsync(label1.Text); //leemos el contenido.
+        }
+
+        private void terminar_Click(object sender, EventArgs e)
+        {
+            if(reader!=null)
+            {
+                reader.Dispose();
+            }
+        }
+
+        private void pausar_Click(object sender, EventArgs e)
+        {
+            if (reader != null)
+            {
+                if (reader.State == SynthesizerState.Speaking)
+                {
+                    reader.Pause();
+                }
+            }
+        }
+
+        private void play_Click(object sender, EventArgs e)
+        {
+            if (reader != null)
+            {
+                if (reader.State == SynthesizerState.Paused)
+                {
+                    reader.Resume();
+                }
+            }
         }
     }
 }
